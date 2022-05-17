@@ -1,4 +1,4 @@
-<form method="POST" action="/">
+<form method="POST" action="">
     {{ form.csrf_token }}
     {% for field in form %}
     {% if field.name != "csrf_token" and field.name != "submit" %}

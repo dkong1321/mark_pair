@@ -49,7 +49,6 @@ def daily(year, month, day):
     with psycopg2.connect(**CONNECTION_PARAMETERS) as conn:
         with conn.cursor() as curs:
             day = date(year, month, day)
-            day.strftime("%H:%M:%S")
             td = timedelta(days=1)
             next_day = day+td
             print(day)
@@ -61,7 +60,9 @@ def daily(year, month, day):
                 FROM appointments
                 WHERE start_datetime BETWEEN %(day)s AND %(next_day)s
                 ORDER BY start_datetime;
-                """
+                """,
+                {"day": day,
+                "next_day": next_day}
             )
             rows = curs.fetchall()
 

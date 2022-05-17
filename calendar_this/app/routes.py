@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect
 import os
 import psycopg2
+from app.forms import AppointmentForm
 CONNECTION_PARAMETERS = {
     "user": os.environ.get("DB_USER"),
     "password": os.environ.get("DB_PASS"),
@@ -14,6 +15,7 @@ bp = Blueprint("main", __name__, url_prefix='/')
 @bp.route("/")
 
 def main():
+    form = AppointmentForm()
     with psycopg2.connect(**CONNECTION_PARAMETERS) as conn:
         with conn.cursor() as curs:
             curs.execute(
@@ -24,5 +26,5 @@ def main():
                 """,
             )
             rows = curs.fetchall()
-            print(rows)
-    return render_template("main.html", rows=rows)
+
+    return render_template("main.html", rows=rows, form=form)
